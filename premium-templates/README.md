@@ -20,12 +20,22 @@ plain HTTPS, same as `version.json`.
      "name": "Human-readable name shown in the gallery",
      "category": "A short category label",
      "manifestFile": "<id>.json",
-     "imageFile": "<id>.png"
+     "imageFile": "<id>.png",
+     "version": 1
    }
    ```
 
 5. Commit and push. The app re-fetches `index.json` every time a user opens the Premium
    Templates gallery — no rebuild or release needed.
+
+## Updating a template you already shipped
+
+Repeat steps 1–3 for the revised version, overwriting the same `<id>.json`/`<id>.png` in this
+folder, then **bump `version`** on that entry in `index.json` (2, 3, …) and push. Every user's
+app re-checks each template's version the moment they open the gallery and silently re-downloads
+anything the admin has bumped — there's no separate "check for updates" step for them to find.
+Forgetting to bump `version` means the new files sit here unused; every existing install keeps
+using its already-cached copy.
 
 Every field in a template loaded from this folder has its font/size locked regardless of what
 `userEditableColor`/`userEditableSize` say in the manifest — see `TemplateService.LoadFrom` in
